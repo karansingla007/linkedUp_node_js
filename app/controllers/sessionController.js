@@ -193,6 +193,9 @@ let updateSessionStatus = async (req, res) => {
         let findSession = await SessionModel.findOne({ sessionId: sessionId });
         let speakerUsers = findSession['speakerUsers'];
 
+        console.log('##################################SpeakerUsers');
+        console.log(speakerUsers);
+
         if (findSession != null) {
             let status = req.body.status;
             let createSession = {
