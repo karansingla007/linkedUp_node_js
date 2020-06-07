@@ -1,5 +1,6 @@
 let Busboy = require('busboy')
 let s3upload = require('../libs/s3Upload')
+let mongoose = require('mongoose')
 const UserModel = mongoose.model('User')
 
 let uploadImage = (req, res) => {
