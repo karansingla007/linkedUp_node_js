@@ -37,9 +37,11 @@ let createSession = async (req, res) => {
             sessionId: createSession.sessionId,
         }
         setTimeout(() => {
-            // for(var i=0;i<speakerUsers.length;i++) {
-            fcmLibs.sendMessage({ receiverId: hostUserId, notificationBody: `${hostUser['userName']} is create a meeting with you`, notificationTitle: 'meeting create', linkType: 'MEETING_CREATE', link: { type: 'MEETING_CREATE', id: sessionId }, });
-            // }
+            if (speakerUsers != null && speakerUsers.length > 0) {
+                for (var i = 0; i < speakerUsers.length; i++) {
+                    fcmLibs.sendMessage({ receiverId: speakerUsers[i]['userId'], notificationBody: `${hostUser['userName']} is create a meeting with you`, notificationTitle: 'meeting create', linkType: 'MEETING_CREATE', link: { type: 'MEETING_CREATE', id: sessionId }, });
+                }
+            }
         }, 500);
 
         res.status(200).send({ statusCode: 200, data: custome })
@@ -189,6 +191,7 @@ let updateSessionStatus = async (req, res) => {
         let sessionId = req.body.sessionId;
 
         let findSession = await SessionModel.findOne({ sessionId: sessionId });
+        let speakerUsers = findSession['speakerUsers'];
 
         if (findSession != null) {
             let status = req.body.status;
@@ -200,6 +203,15 @@ let updateSessionStatus = async (req, res) => {
             let custome = {
                 sessionId: sessionId,
             }
+
+            setTimeout(() => {
+                if (speakerUsers != null && speakerUsers.length > 0) {
+                    for (var i = 0; i < speakerUsers.length; i++) {
+                        fcmLibs.sendMessage({ receiverId: speakerUsers[i]['userId'], notificationBody: `${hostUser['userName']} has start the meeting.`, notificationTitle: 'meeting started', linkType: 'MEETING_CREATE', link: { type: 'MEETING_START', id: sessionId }, });
+                    }
+                }
+            }, 500);
+
             res.status(200).send({ statusCode: 200, data: custome })
         } else {
             res.status(500).send({ statusCode: 500, })

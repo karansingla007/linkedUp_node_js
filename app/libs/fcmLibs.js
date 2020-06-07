@@ -1,19 +1,9 @@
 let mongoose = require('mongoose')
 const UserModel = mongoose.model('User')
-const FCM = require("firebase-admin");
 
-const serviceAccount = require("../../config/firebase_config.json");
-
-try {
-    console.log('########################1');
-FCM.initializeApp({
-  credential: FCM.credential.cert(serviceAccount),
-  databaseURL: "https://linked-up-29119.firebaseio.com"
-}, 'Primary');
-} catch(err) {
-    console.log('########################');
-    console.log(err);
-}
+var FCM = require('fcm-node');
+var serverKey = 'AAAA2CkDxnw:APA91bEirx9SskG7XI9OxE3ncyavVcAZvgfb5QjpZ4q1-zFHG9Wk9TLYW4WrpU8rsL951OzMxIpUEKHGB85DHsvmRhRWzRh929xy4kDMQgdZluqg_3SLGiSkK1RRoSBtucd6JTzLn4hM'; //put your server key here
+var fcm = new FCM(serverKey);
 
 function sendMessage(notificationData) {
     return new Promise(async (resolve, reject) => {
@@ -22,7 +12,7 @@ function sendMessage(notificationData) {
             console.log('########################2');
             console.log(receiver);
             const message = {
-                token: receiver.firebaseId,
+                to: receiver.firebaseId,
                 'android': {
                     priority: 'high'
                 },
@@ -38,30 +28,21 @@ function sendMessage(notificationData) {
                     'click_action': "FLUTTER_NOTIFICATION_CLICK"
                 }
             };
-            console.log('########################4');
-            console.log(message);
-            FCM.messaging().send(message).then((response) => {
-                // Response is a message ID string.
-                console.log('Successfully sent message:', response);
-                resolve(response)
-            })
-                .catch((error) => {
-                    console.log(error);
-                    // reject(error)
-                });
+
+            fcm.send(message, function (err, response) {
+                if (err) {
+                    console.log("Something has gone wrong!");
+                } else {
+                    console.log("Successfully sent with response: ", response);
+                }
+            });
+            resolve('success');
         } catch (err) {
-            console.log('########################3');
-            console.log(err);
             reject(err);
         }
     })
 }
 
-// ​let sendMessage = (notificationData) => {
-   
-// }
-
 module.exports = {
     sendMessage,
 }
-

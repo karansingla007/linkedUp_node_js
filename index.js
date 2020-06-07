@@ -2,11 +2,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const http = require('http');
 const path = require('path')
+const busboyBodyParser = require('busboy-body-parser');
+const busboy = require('connect-busboy');
 
 const fs = require('fs')
 const bodyParser = require('body-parser')
 
 const app = express()
+app.use(busboy());
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
 
@@ -161,5 +164,9 @@ const commentController = require('./app/controllers/commentController')
 app.post('/insertCommentInList', commentController.insertCommentInList)
 
 app.get('/getCommentListBySessionId/:sessionId', commentController.getCommentListBySessionId)
+
+const uploadController = require('./app/controllers/uploadController')
+
+app.post('/uploadImage/:userId', busboyBodyParser(), uploadController.uploadImage)
 
 module.exports = app
