@@ -1,5 +1,7 @@
 let Busboy = require('busboy')
 let s3upload = require('../libs/s3Upload')
+const UserModel = mongoose.model('User')
+
 let uploadImage = (req, res) => {
     try {
         let busboy = new Busboy({ headers: req.headers })
@@ -18,6 +20,12 @@ let uploadImage = (req, res) => {
                 result = {
                     "path": path,
                 }
+
+                let createUser = {
+                    profilePicUrl: path,
+                }
+
+                let createdUser = await UserModel.updateOne({userId: userId}, createUser);
                 res.status(200).send({ statusCode: 200, body: result })
             }
         });

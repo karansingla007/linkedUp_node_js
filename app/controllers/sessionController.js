@@ -210,7 +210,7 @@ let updateSessionStatus = async (req, res) => {
             setTimeout(() => {
                 if (speakerUsers != null && speakerUsers.length > 0) {
                     for (var i = 0; i < speakerUsers.length; i++) {
-                        fcmLibs.sendMessage({ receiverId: speakerUsers[i]['userId'], notificationBody: `${hostUser['userName']} has start the meeting.`, notificationTitle: 'meeting started', linkType: 'MEETING_CREATE', link: { type: 'MEETING_START', id: sessionId }, });
+                        fcmLibs.sendMessage({ receiverId: speakerUsers[i]['userId'], notificationBody: `${hostUser['userName']} has start the meeting.`, notificationTitle: 'meeting started', linkType: 'MEETING_START', link: { type: 'MEETING_START', id: sessionId }, });
                     }
                 }
             }, 500);
