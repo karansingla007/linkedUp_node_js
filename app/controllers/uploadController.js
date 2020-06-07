@@ -10,7 +10,8 @@ let uploadImage = (req, res) => {
             if (Object.keys(req.files).length === 0) {
                 res.status(400).send({ statusCode: 400, })
             } else {
-                let fileName = 'userImages/' + req.params.userId + '/' + Date.now();
+                var userId = req.params.userId;
+                let fileName = 'userImages/' + userId + '/' + Date.now();
                 const file = req.files.myfile;
                 fileName += '.' + file.name.substr(file.name.lastIndexOf('.') + 1);
                 const data = await s3upload.uploadToS3(file, fileName);   //s3 upload
