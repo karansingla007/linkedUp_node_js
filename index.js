@@ -161,6 +161,8 @@ app.get('/getEndedSessionListOfUser/:userId', sessionController.getEndedSessionL
 
 app.put('/updateSessionStatus/', sessionController.updateSessionStatus)
 
+app.put('/endSessionStatus/', sessionController.endSessionStatus)
+
 
 const networkController = require('./app/controllers/networkController')
 

@@ -186,6 +186,28 @@ let getEndedSessionListOfUser = async (req, res) => {
     }
 }
 
+let endSessionStatus = async (req, res) => {
+    try {
+        let sessionId = req.body.sessionId;
+        let findSession = await SessionModel.findOne({ sessionId: sessionId });
+
+        if (findSession != null) {
+            let status = req.body.status;
+            let createSession = {
+                status: 'ended',
+            }
+            let createdSession = await SessionModel.updateOne({ sessionId: sessionId }, createSession);
+            let custome = {
+                sessionId: sessionId,
+            }
+            res.status(200).send({ statusCode: 200, data: custome })
+        }
+
+    } catch(err) {
+        res.status(500).send({ statusCode: 500, reason: `${err}` })
+    }
+}
+
 let updateSessionStatus = async (req, res) => {
     try {
         let sessionId = req.body.sessionId;
@@ -234,5 +256,6 @@ module.exports = {
     getLiveSessionListOfUser,
     getScheduleSessionListOfUser,
     getEndedSessionListOfUser,
-    updateSessionStatus
+    updateSessionStatus,
+    endSessionStatus
 }
