@@ -113,7 +113,8 @@ io.on('connection', (socket) => {
     socket.on('meeting_end', (userData) => {
         try{
         console.log('###########################meeting_end');
-        socket.to(data['sessionId']).emit('meeting_ended',);
+        let data = JSON.parse(userData)
+        socket.to(data['sessionId']).emit('meeting_ended', data);
     } catch(_) {
         console.log(_);
     }
