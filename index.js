@@ -110,6 +110,16 @@ io.on('connection', (socket) => {
     }
     });
 
+    socket.on('meeting_end', (userData) => {
+        try{
+        console.log('###########################meeting_end');
+        let data = JSON.parse(userData)
+        socket.to(data['sessionId']).emit('meeting_ended', data);
+    } catch(_) {
+        console.log(_);
+    }
+    });
+
 });
 
 const userController = require('./app/controllers/userController')
