@@ -19,6 +19,7 @@ require('./app/models/User')
 require('./app/models/session')
 require('./app/models/network')
 require('./app/models/comments')
+require('./app/models/feedback')
 
 
 const port = process.env.PORT || 3000
@@ -162,6 +163,11 @@ app.get('/getEndedSessionListOfUser/:userId', sessionController.getEndedSessionL
 app.put('/updateSessionStatus/', sessionController.updateSessionStatus)
 
 app.put('/endSessionStatus/', sessionController.endSessionStatus)
+
+
+const feedbackController = require('./app/controllers/feedbackController')
+
+app.post('/insertFeedback', feedbackController.insertFeedback)
 
 
 const networkController = require('./app/controllers/networkController')
