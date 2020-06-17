@@ -141,6 +141,8 @@ app.get('/getUserDetailByPattern/:pattern/:userId', userController.getUserDetail
 
 app.put('/updateUserInfo', userController.updateUserInfo)
 
+app.put('/updateUserInfoProficPicUrl', userController.updateUserInfoProficPicUrl)
+
 
 const sessionController = require('./app/controllers/sessionController')
 

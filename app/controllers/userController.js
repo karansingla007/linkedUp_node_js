@@ -21,7 +21,7 @@ let loginSignUp = async (req, res) => {
         if (findUser == null) {
             //signup code
             
-            let userId = util.getRandomUserId();
+            let userId = util.getRandomUserId(); 
             
             console.log(userId);
             let userName = req.body.userName + util.getRandomNumberUserName().toString();
@@ -173,6 +173,34 @@ if(findUser != null) {
     }
 }
 
+let updateUserInfoProficPicUrl = async (req, res) => {
+    try {
+        let userId = req.body.userId;
+
+        let findUser = await UserModel.findOne({ userId: userId });
+        
+        console.log(findUser);
+if(findUser != null) {
+            let profilePicUrl = req.body.profilePicUrl;
+            
+
+            let createUser = {
+                profilePicUrl: profilePicUrl,
+            }
+
+            let createdUser = await UserModel.updateOne({userId: userId}, createUser);
+            let custome = {
+                userId: userId,
+            }
+            res.status(200).send({ statusCode: 200, data: custome })
+        } else {
+            res.status(500).send({ statusCode: 500, })
+        }
+    } catch (err) {
+        res.status(500).send({ statusCode: 500, reason: `${err}` })
+    }
+}
+
 let updateFcmToken = async (req, res) => {
     try {
         let fcmToken = req.body.fcmToken;
@@ -308,5 +336,6 @@ module.exports = {
     updateUserInfoAge,
     getUserDetailByPattern,
     updateFcmToken,
-    updateUserInfo
+    updateUserInfo,
+    updateUserInfoProficPicUrl
 }
